@@ -1,0 +1,17 @@
+{
+  "name": "storage-app-server",
+  "version": "0.1.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "./node_modules/nodemon/bin/nodemon.js src/app.js"
+  },
+  "author": "john@tropicalrocket.com",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "nodemailer": "^4.6.7",
+    "nodemon": "^1.17.5"
+  }
+}
