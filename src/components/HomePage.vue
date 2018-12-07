@@ -2,33 +2,45 @@
   <div class="HomePage">
     <b-container>
       <b-row>
-        <div>
-            <b-button @click="showModal">  About </b-button>
-            <b-modal ref="myModalRef" hide-footer title="Google Cloud Storage">
-              <div class="d-block text-center">
-                <p> This is your storage! 
-                  Buckets hold objects <br>
-                  Objects are folders or files. <br>
-                  Click get buckets to begin!
-                </p>
-              </div>
-              <b-btn class="mt-3" variant="outline-danger" block @click="hideModal">Close Me</b-btn>
-            </b-modal>
-          </div>
+        <aboutModal />
       </b-row>
       <b-row>
-        <b-col>
-          
-        </b-col>
+        <b-col></b-col>
         <b-col lg="6">
           <b-button variant="success" @click="getBuckets">Get Buckets</b-button> 
           <hr>
           <h6> Buckets in storage: </h6>
           <div>
-            <b-form-select v-model="selected" :options="options" class="mb-3" >
+            <b-form-select v-model="selectedBucket" :options="options.name" class="mb-3" >
               <option disabled value="null"> Select a bucket</option>
+              <option v-for="(option, index) in options" v-bind:value="option.name" :key="index">
+                {{ option.name }}
+              </option>
             </b-form-select>
-            <div>Selected: <strong>{{ selected }}</strong></div>
+            <div>Selected: <strong>{{ selectedBucket }}</strong></div>
+            <br>
+            <div v-if="showButton">
+              <b-button variant="primary" @click="getBucketObject"> Get files from {{selectedBucket}} ? </b-button>
+            </div>
+            <div v-if="showNoneSelected">
+              <p>Please select a bucket from above</p>
+            </div>
+          </div>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+      <hr>
+      <b-row>
+        <b-col>
+          <h6>Create a new bucket</h6>
+        </b-col>
+        <b-col>
+          <div>
+            <b-form-input v-model="bucketName" type="text" placeholder="Enter a name for your new bucket"></b-form-input>
+            <p>Value: {{ bucketName }}</p>
+            <br>
+            <b-button variant="success" @click="createNewBucket">Create Bucket</b-button>
+            <p>{{errorMsg}}</p>
           </div>
         </b-col>
         <b-col></b-col>
@@ -38,17 +50,32 @@
 </template>
 
 <script>
+import aboutModal from '@/components/aboutModal'
 export default {
   name: 'HomePage',
+  components: {
+    aboutModal,
+  },
   data() {
     return {
-      selected: null,
+      selectedBucket: null,
       options: [],
+      bucketName: '',
+      errorMsg: '',
+      showButton: false,
+      showNoneSelected: false,
+    }
+  },
+  watch: {
+    selectedBucket(newVal, oldVal) {
+      console.log(newVal, 'new');
+      console.log(oldVal, 'old');
+      this.showIfThen();
     }
   },
   methods: {
     getBuckets() {
-      axios.get('http://4900f998.ngrok.io/api/buckets')
+      axios.get('http://0a1fb6c9.ngrok.io/api/buckets')
       .then((response) => {
         console.log(response);
         this.options = response.data;
@@ -57,12 +84,33 @@ export default {
         console.log(error);
       })
     },
-    showModal () {
-      this.$refs.myModalRef.show()
+    createNewBucket() {
+      axios.post('http://0a1fb6c9.ngrok.io/api/buckets/', { name: this.bucketName })
+      .then((response) => {
+        console.log(response, 'good');
+      })
+      .catch((err) => {
+        console.log(err.message, 'eadawdawda');
+      })
     },
-    hideModal () {
-      this.$refs.myModalRef.hide()
+    showIfThen() {
+      console.log(this.selectedBucket);
+      if(this.selectedBucket) {
+        this.showButton = true
+      } else {
+        this.showNoneSelected = true;
+      }
     },
+    getBucketObject() {
+      console.log('at get bucket objects');
+      axios.get('http://0a1fb6c9.ngrok.io/api/objects/'+this.selectedBucket)
+       .then((response) => {
+        console.log(response, 'good');
+      })
+      .catch((error) => {
+        console.log(error, 'BucketObjects');
+      })
+    }
   }
 };
 </script>
