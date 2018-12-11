@@ -1,6 +1,6 @@
 <template>
   <div class="createBucket">
-    <b-button variant="success" @click="showModal">  Create </b-button>
+    <b-button @click="showModal">Create a new container</b-button>
     <b-modal ref="createBucketRef" hide-footer title="Create Storage Container">
       <div class="d-block text-center">
         <b-container>
@@ -11,16 +11,15 @@
           <b-col>
             <div>
               <b-form-input v-model="bucketName" type="text" placeholder="Enter a name for your new bucket"></b-form-input>
-              <p>Value: {{ bucketName }}</p>
               <br>
-              <b-button size="small" variant="success" @click="createNewBucket">Create Bucket</b-button>
+              <b-button @click="createNewBucket">Create Bucket</b-button>
               <p></p>
             </div>
           </b-col>
         </b-row>
       </b-container>
       </div>
-      <b-btn size="small" variant="outline-danger" @click="hideModal">Close Me</b-btn>
+      <b-btn @click="hideModal">Close Me</b-btn>
     </b-modal>  
   </div>
 </template>
@@ -29,7 +28,7 @@
   name: 'createBucket',
   data() {
     return {
-      nGrok:'http://e42fbb95.ngrok.io',
+      nGrok:'http://2ca1b7de.ngrok.io',
       bucketName: '',
     }
   },

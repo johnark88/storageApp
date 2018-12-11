@@ -1,15 +1,15 @@
 <template>
   <div class="aboutModal">
-    <b-button size="small" @click="showModal" class="aboutButton">  About </b-button>
+    <b-button @click="showModal" class="aboutButton">  About </b-button>
     <b-modal ref="myModalRef" hide-footer title="About Storage Containers">
-      <div class="d-block text-center">
-        <p> This is your storage! 
+      <div class="text-center">
+        <p> This is your storage! <br>
           Containers hold objects <br>
           Objects are folders and files. <br>
           Click get containers to begin!
         </p>
       </div>
-      <b-btn size="small" variant="outline-danger"  @click="hideModal">Close Me</b-btn>
+      <b-button @click="hideModal">Close Me</b-button>
     </b-modal>  
   </div>
 </template>
