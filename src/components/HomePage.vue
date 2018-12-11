@@ -1,25 +1,14 @@
 <template>
   <div class="HomePage">
     <b-container>
-      <b-row class="justify-content-md-center">
-        <b-col md="2">
-           
-        </b-col>
-        <b-col md="3">
-          <b-button variant="success" @click="getBuckets">Show current containers</b-button> 
-        </b-col>
-        <b-col md="2">
-           <createBucket /> 
-        </b-col>
-        <b-col>
-          <b-button>Upload</b-button>
-        </b-col>
-      </b-row>
-    </b-container>
-    <b-container>
       <b-row>
         <hr width="100%">
-        <b-col lg="2">
+        <b-col lg="2"> 
+          <b-button @click="getBuckets">Show current containers</b-button> 
+          <p></p>
+          <createBucket /> 
+        </b-col>
+        <b-col lg="3">
           <h5> Containers in storage: </h5>
           <div>
             <div v-for="(item, index) in options" :key="index">
@@ -30,47 +19,29 @@
           </div>
         </b-col>
         <b-col>
-         
           <h5>Folder List: </h5>
           <div v-for="(folder, item) in folderList" :key="item">
             <h6> <font-awesome-icon :icon="['fas', 'folder-open']" size="lg" /> {{folder}}</h6>
-            <h6> {{folder}}</h6>
           </div>
         </b-col>
       </b-row>
-    </b-container>
-    <b-container>
-
     </b-container>
   </div>
 </template>
 
 <script>
-// import aboutModal from '@/components/aboutModal'
 import createBucket from '@/components/createBucket'
 export default {
   name: 'HomePage',
   components: {
-    // aboutModal,
     createBucket,
   },
   data() {
     return {
-      selectedBucket: null,
       options: [],
-      bucketName: '',
-      errorMsg: '',
-      objectList: [],
-      prefixList: [],
       folderList: [],
       filelist: [],
-      nGrok:'http://e42fbb95.ngrok.io'
-    }
-  },
-  watch: {
-    selectedBucket(newVal, oldVal) {
-      console.log(newVal, 'new');
-      console.log(oldVal, 'old');
+      nGrok:'http://2ca1b7de.ngrok.io'
     }
   },
   methods: {
@@ -89,21 +60,24 @@ export default {
       // lists files and folders in the bucket
       axios.get(''+this.nGrok+'/api/objects/'+name)
        .then((response) => {
-        this.objectList = response.data.files;
-        this.sortFiles();
+        let objectList = '';
+        objectList = response.data.files;
+        this.sortFiles(objectList);
       })
       .catch((error) => {
-        console.log(error, 'BucketObjects');
+        console.log(error, 'BucketObjects error line 79');
       })
     },
-    sortFiles() {
-      this.objectList.forEach((file) => {
+    sortFiles(objectList) {
+      const prefixList = [];
+      objectList.forEach((file) => {
         // Breaks off the prefix
         const stringSplit = file.split('/')[0];
-        // console.log(stringSplit);
-        this.prefixList.push(stringSplit);
+        // push it to temp array
+        prefixList.push(stringSplit);
       })
-      this.findDuplicates(this.prefixList);
+      // let find those duplicates 
+      this.findDuplicates(prefixList);
       // string split the files as well to file list array 
 
     },
@@ -116,21 +90,19 @@ export default {
         if (data.indexOf(element, index + 1) > -1) {
         // Find if the element is already in the result array or not
           if (result.indexOf(element) === -1) {
+            // pa pa push it real good ....... to the results array 
             result.push(element);
           }
         }
       });
+      // make it accessable for display
       this.folderList = result;
-      console.log(this.folderList, 'results');
     }     
   }
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-a {
-  color: #42b983;
-}
 .containerButtons {
   padding: 6px;
 }
