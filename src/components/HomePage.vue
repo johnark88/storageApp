@@ -1,60 +1,58 @@
 <template>
   <div class="HomePage">
     <b-container>
-      <b-row>
-        <aboutModal />
+      <b-row class="justify-content-md-center">
+        <b-col md="2">
+           <aboutModal /> 
+        </b-col>
+        <b-col md="3">
+          <b-button variant="success" @click="getBuckets">Show current containers</b-button> 
+        </b-col>
+        <b-col md="2">
+           <createBucket /> 
+        </b-col>
+        <b-col>
+          <b-button>Upload</b-button>
+        </b-col>
       </b-row>
+    </b-container>
+    <b-container>
       <b-row>
-        <b-col></b-col>
-        <b-col lg="6">
-          <b-button variant="success" @click="getBuckets">Get Buckets</b-button> 
-          <hr>
-          <h6> Buckets in storage: </h6>
+        <hr width="100%">
+        <b-col lg="2">
+          <h5> Containers in storage: </h5>
           <div>
-            <b-form-select v-model="selectedBucket" :options="options.name" class="mb-3" >
-              <option disabled value="null"> Select a bucket</option>
-              <option v-for="(option, index) in options" v-bind:value="option.name" :key="index">
-                {{ option.name }}
-              </option>
-            </b-form-select>
-            <div>Selected: <strong>{{ selectedBucket }}</strong></div>
-            <br>
-            <div v-if="showButton">
-              <b-button variant="primary" @click="getBucketObject"> Get files from {{selectedBucket}} ? </b-button>
-            </div>
-            <div v-if="showNoneSelected">
-              <p>Please select a bucket from above</p>
+            <div v-for="(item, index) in options" :key="index">
+              <div class="containerButtons">
+                <b-button @click="getBucketObject(item.name)">{{item.name}}</b-button> 
+              </div>
             </div>
           </div>
         </b-col>
-        <b-col></b-col>
-      </b-row>
-      <hr>
-      <b-row>
         <b-col>
-          <h6>Create a new bucket</h6>
-        </b-col>
-        <b-col>
-          <div>
-            <b-form-input v-model="bucketName" type="text" placeholder="Enter a name for your new bucket"></b-form-input>
-            <p>Value: {{ bucketName }}</p>
-            <br>
-            <b-button variant="success" @click="createNewBucket">Create Bucket</b-button>
-            <p>{{errorMsg}}</p>
+         
+          <h5>Folder List: </h5>
+          <div v-for="(folder, item) in folderList" :key="item">
+            <h6> <font-awesome-icon :icon="['fas', 'folder-open']" size="lg" /> {{folder}}</h6>
+            <h6> {{folder}}</h6>
           </div>
         </b-col>
-        <b-col></b-col>
       </b-row>
+    </b-container>
+    <b-container>
+
     </b-container>
   </div>
 </template>
 
 <script>
 import aboutModal from '@/components/aboutModal'
+import createBucket from '@/components/createBucket'
 export default {
   name: 'HomePage',
   components: {
     aboutModal,
+    createBucket,
   },
   data() {
     return {
@@ -62,20 +60,23 @@ export default {
       options: [],
       bucketName: '',
       errorMsg: '',
-      showButton: false,
-      showNoneSelected: false,
+      objectList: [],
+      prefixList: [],
+      folderList: [],
+      filelist: [],
+      nGrok:'http://e42fbb95.ngrok.io'
     }
   },
   watch: {
     selectedBucket(newVal, oldVal) {
       console.log(newVal, 'new');
       console.log(oldVal, 'old');
-      this.showIfThen();
     }
   },
   methods: {
     getBuckets() {
-      axios.get('http://0a1fb6c9.ngrok.io/api/buckets')
+      // get all buckets for user/project
+      axios.get(''+this.nGrok+'/api/buckets')
       .then((response) => {
         console.log(response);
         this.options = response.data;
@@ -84,33 +85,44 @@ export default {
         console.log(error);
       })
     },
-    createNewBucket() {
-      axios.post('http://0a1fb6c9.ngrok.io/api/buckets/', { name: this.bucketName })
-      .then((response) => {
-        console.log(response, 'good');
-      })
-      .catch((err) => {
-        console.log(err.message, 'eadawdawda');
-      })
-    },
-    showIfThen() {
-      console.log(this.selectedBucket);
-      if(this.selectedBucket) {
-        this.showButton = true
-      } else {
-        this.showNoneSelected = true;
-      }
-    },
-    getBucketObject() {
-      console.log('at get bucket objects');
-      axios.get('http://0a1fb6c9.ngrok.io/api/objects/'+this.selectedBucket)
+    getBucketObject(name) {
+      // lists files and folders in the bucket
+      axios.get(''+this.nGrok+'/api/objects/'+name)
        .then((response) => {
-        console.log(response, 'good');
+        this.objectList = response.data.files;
+        this.sortFiles();
       })
       .catch((error) => {
         console.log(error, 'BucketObjects');
       })
-    }
+    },
+    sortFiles() {
+      this.objectList.forEach((file) => {
+        // Breaks off the prefix
+        const stringSplit = file.split('/')[0];
+        // console.log(stringSplit);
+        this.prefixList.push(stringSplit);
+      })
+      this.findDuplicates(this.prefixList);
+      // string split the files as well to file list array 
+
+    },
+    findDuplicates(data) {
+      // Sort out all duplications
+      // push remaining folders to folderList array
+      let result = [];
+      data.forEach(function(element, index) {
+      // Find if there is a duplicate or not
+        if (data.indexOf(element, index + 1) > -1) {
+        // Find if the element is already in the result array or not
+          if (result.indexOf(element) === -1) {
+            result.push(element);
+          }
+        }
+      });
+      this.folderList = result;
+      console.log(this.folderList, 'results');
+    }     
   }
 };
 </script>
@@ -118,5 +130,8 @@ export default {
 <style scoped lang="scss">
 a {
   color: #42b983;
+}
+.containerButtons {
+  padding: 6px;
 }
 </style>

@@ -1,15 +1,15 @@
 <template>
   <div class="aboutModal">
     <b-button variant="primary" @click="showModal">  About </b-button>
-    <b-modal ref="myModalRef" hide-footer title="Google Cloud Storage">
+    <b-modal ref="myModalRef" hide-footer title="About Storage Containers">
       <div class="d-block text-center">
         <p> This is your storage! 
-          Buckets hold objects <br>
-          Objects are folders or files. <br>
-          Click get buckets to begin!
+          Containers hold objects <br>
+          Objects are folders and files. <br>
+          Click get containers to begin!
         </p>
       </div>
-      <b-btn class="mt-3" variant="outline-danger" block @click="hideModal">Close Me</b-btn>
+      <b-btn size="small" variant="outline-danger"  @click="hideModal">Close Me</b-btn>
     </b-modal>  
   </div>
 </template>
