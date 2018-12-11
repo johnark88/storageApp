@@ -20,14 +20,11 @@ exports.getAllBuckets = async (req, res) => {
 };
 
 exports.createBucket = async (req, res, next) => {
-  console.log(req.body);
   const bucketName = req.body.name;
-  console.log(bucketName);
   await storage.createBucket(bucketName, {
     location: 'US-central1',
     storageClass: 'Regional',
   }).then((response) => {
-    console.log(response.message, 'response');
     res.send(200, `Bucket ${bucketName} created`);
   }).catch((error) => {
     let err = {};
