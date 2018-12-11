@@ -4,17 +4,17 @@
   </div>
 </template>
 <script>
-  export default {
+export default {
   name: 'Upload',
   components: {
-    
+
   },
   data() {
     return {
-    }
-  }
-}
+    };
+  },
+};
 </script>
 <style scoped lang="scss">
-  
+
 </style>

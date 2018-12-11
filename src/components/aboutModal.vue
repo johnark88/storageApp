@@ -10,26 +10,26 @@
         </p>
       </div>
       <b-button @click="hideModal">Close Me</b-button>
-    </b-modal>  
+    </b-modal>
   </div>
 </template>
 <script>
-  export default {
+export default {
   name: 'aboutModal',
   data() {
     return {
-      
-    }
+
+    };
   },
   methods: {
-    showModal () {
-      this.$refs.myModalRef.show()
+    showModal() {
+      this.$refs.myModalRef.show();
     },
-    hideModal () {
-      this.$refs.myModalRef.hide()
+    hideModal() {
+      this.$refs.myModalRef.hide();
     },
-  }
-}
+  },
+};
 </script>
 <style scoped lang="scss">
   .aboutButton {

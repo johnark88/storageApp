@@ -1,14 +1,15 @@
 <template>
   <div id="app">
     <div id="nav">
-      
+
       <navigation />
     </div>
     <router-view/>
   </div>
 </template>
 <script>
-import navigation from '@/components/navigation'
+import navigation from '@/components/navigation.vue';
+
 export default {
   name: 'App',
   components: {
@@ -16,10 +17,10 @@ export default {
   },
   data() {
     return {
-    
-    }
-  }
-}
+
+    };
+  },
+};
 </script>
 <style lang="scss">
 #app {

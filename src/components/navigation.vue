@@ -10,12 +10,12 @@
             <b-nav-item><router-link to="/upload">Upload</router-link></b-nav-item>
             <!-- <b-nav-item><router-link to="/">Home</router-link></b-nav-item>
             <b-nav-item><router-link to="/">Home</router-link></b-nav-item> -->
-            <about-modal /> 
+            <about-modal />
             <b-nav-item-dropdown text="User" right>
               <b-dropdown-item href="#">Account</b-dropdown-item>
               <b-dropdown-item href="#">Settings</b-dropdown-item>
             </b-nav-item-dropdown>
-            
+
           </b-navbar-nav>
         </b-collapse>
     </b-navbar>
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import aboutModal from '@/components/aboutModal'
+import aboutModal from '@/components/aboutModal.vue';
 // import createBucket from '@/components/createBucket'
 export default {
   name: 'navigation',
@@ -33,10 +33,10 @@ export default {
   },
   data() {
     return {
-    
-    }
-  }
-}
+
+    };
+  },
+};
 </script>
 <style lang="scss">
 a {
@@ -46,7 +46,7 @@ a {
     color: white;
   }
 }
-.mainNavBar{ 
+.mainNavBar{
   margin-bottom: 25px;
   background-color: #8c8b90;
 }
