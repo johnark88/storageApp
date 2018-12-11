@@ -1,6 +1,6 @@
 <template>
   <div class="aboutModal">
-    <b-button variant="primary" @click="showModal">  About </b-button>
+    <b-button size="small" @click="showModal" class="aboutButton">  About </b-button>
     <b-modal ref="myModalRef" hide-footer title="About Storage Containers">
       <div class="d-block text-center">
         <p> This is your storage! 
@@ -32,5 +32,14 @@
 }
 </script>
 <style scoped lang="scss">
-  
+  .aboutButton {
+    background-color: transparent;
+    margin-bottom: -14px;
+    border: none;
+    color: #f8e5a3;
+  &:hover {
+    text-decoration: none;
+    color: white;
+  }
+}
 </style>

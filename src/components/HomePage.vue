@@ -3,7 +3,7 @@
     <b-container>
       <b-row class="justify-content-md-center">
         <b-col md="2">
-           <aboutModal /> 
+           
         </b-col>
         <b-col md="3">
           <b-button variant="success" @click="getBuckets">Show current containers</b-button> 
@@ -46,12 +46,12 @@
 </template>
 
 <script>
-import aboutModal from '@/components/aboutModal'
+// import aboutModal from '@/components/aboutModal'
 import createBucket from '@/components/createBucket'
 export default {
   name: 'HomePage',
   components: {
-    aboutModal,
+    // aboutModal,
     createBucket,
   },
   data() {

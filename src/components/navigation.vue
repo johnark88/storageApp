@@ -1,21 +1,34 @@
 <template>
   <div class="navigation">
-    <b-nav tabs>
-      <b-nav-item>Active</b-nav-item>
-      <b-nav-item>Link</b-nav-item>
-      <b-nav-item>Another Link</b-nav-item>
-      <b-nav-item>Disabled</b-nav-item>
-    </b-nav>
+    <b-navbar toggleable  class="mainNavBar">
+        <b-navbar-toggle target="nav_text_collapse"></b-navbar-toggle>
+        <b-navbar-brand>Storage App</b-navbar-brand>
+        <b-collapse is-nav id="nav_text_collapse">
+          <b-nav-text>Your storage needs </b-nav-text>
+          <b-navbar-nav fill="true">
+            <b-nav-item><router-link to="/">Home</router-link></b-nav-item>
+            <b-nav-item><router-link to="/upload">Upload</router-link></b-nav-item>
+            <!-- <b-nav-item><router-link to="/">Home</router-link></b-nav-item>
+            <b-nav-item><router-link to="/">Home</router-link></b-nav-item> -->
+            <about-modal /> 
+            <b-nav-item-dropdown text="User" right>
+              <b-dropdown-item href="#">Account</b-dropdown-item>
+              <b-dropdown-item href="#">Settings</b-dropdown-item>
+            </b-nav-item-dropdown>
+            
+          </b-navbar-nav>
+        </b-collapse>
+    </b-navbar>
   </div>
 </template>
 
 <script>
-// import aboutModal from '@/components/aboutModal'
+import aboutModal from '@/components/aboutModal'
 // import createBucket from '@/components/createBucket'
 export default {
   name: 'navigation',
   components: {
-    // aboutModal,
+    aboutModal,
     // createBucket,
   },
   data() {
@@ -25,15 +38,26 @@ export default {
   }
 }
 </script>
-<style scoped lang="scss">
-  #nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<style lang="scss">
+a {
+  color: #f8e5a3;
+  &:hover {
+    text-decoration: none;
+    color: white;
+  }
+}
+.mainNavBar{ 
+  margin-bottom: 25px;
+  background-color: #8c8b90;
+}
+.navbar-nav {
+  margin-left: 70px;
+}
+
+
+@media (max-width: 599px) {
+ .navbar-nav {
+    margin-left: 0px;
   }
 }
 </style>
