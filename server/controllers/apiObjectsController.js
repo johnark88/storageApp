@@ -14,7 +14,6 @@ exports.getObjects = async (req, res) => {
     bucket: bucketName,
     files: [],
   };
-  console.log('Files:');
   files.forEach((file) => {
     console.log(file.name);
     bucketObjects.files.push(file.name);
