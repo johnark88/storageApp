@@ -1,6 +1,6 @@
 <template>
   <div class="createBucket">
-    <b-button @click="showModal">Create a new container</b-button>
+    <b-button class="homeButton" @click="showModal">Create a new container</b-button>
     <b-modal ref="createBucketRef" hide-footer title="Create Storage Container">
       <div class="d-block text-center">
         <b-container>
@@ -14,14 +14,14 @@
                 placeholder="Enter a name for your new bucket">
               </b-form-input>
               <br>
-              <b-button @click="createNewBucket">Create Bucket</b-button>
+              <b-button class="homeButton" @click="createNewBucket">Create Bucket</b-button>
               <p></p>
             </div>
           </b-col>
         </b-row>
       </b-container>
       </div>
-      <b-btn @click="hideModal">Close Me</b-btn>
+      <!-- <b-btn class="homeButton" @click="hideModal">Close Me</b-btn> -->
     </b-modal>
   </div>
 </template>
@@ -54,5 +54,8 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-
+.homeButton {
+  background-color: $colorBlue;
+  border-color: $colorBlue;
+}
 </style>

@@ -9,7 +9,7 @@
           Click get containers to begin!
         </p>
       </div>
-      <b-button @click="hideModal">Close Me</b-button>
+      <!-- <b-button class="homeButton" @click="hideModal">Close Me</b-button> -->
     </b-modal>
   </div>
 </template>
@@ -32,14 +32,17 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+  .homeButton {
+    background-color: $colorBlue;
+    border-color: $colorBlue;
+  }
   .aboutButton {
     background-color: transparent;
     margin-bottom: -14px;
     border: none;
-    color: #f8e5a3;
+    color: $colorDark;
   &:hover {
-    text-decoration: none;
-    color: white;
+    color: $colorAqua;
   }
 }
 </style>

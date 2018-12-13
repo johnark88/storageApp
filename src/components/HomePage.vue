@@ -4,7 +4,7 @@
       <b-row>
         <hr width="100%">
         <b-col lg="2">
-          <b-button @click="getBuckets">Show current containers</b-button>
+          <b-button class="homeButton" @click="getBuckets">Show current containers</b-button>
           <p></p>
           <createBucket />
         </b-col>
@@ -13,7 +13,7 @@
           <div>
             <div v-for="(item, index) in options" :key="index">
               <div class="containerButtons">
-                <b-button @click="getBucketObject(item.name)">{{item.name}}</b-button>
+                <b-button class="homeButton" @click="getBucketObject(item.name)">{{item.name}}</b-button>
               </div>
             </div>
           </div>
@@ -105,5 +105,9 @@ export default {
 <style scoped lang="scss">
 .containerButtons {
   padding: 6px;
+}
+.homeButton {
+  background-color: $colorBlue;
+  border-color: $colorBlue;
 }
 </style>

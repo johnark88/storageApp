@@ -40,15 +40,25 @@ export default {
 </script>
 <style lang="scss">
 a {
-  color: #f8e5a3;
+  color: $colorDark;
   &:hover {
     text-decoration: none;
-    color: white;
+    color: $colorAqua;
   }
+}
+.navbar-light .navbar-brand {
+  color: $colorDark;
+  font-weight: 500;
+}
+.navbar-light .navbar-text {
+  color: $colorDark;
+}
+.navbar-light .navbar-nav .nav-link {
+  color: $colorDark;
 }
 .mainNavBar{
   margin-bottom: 25px;
-  background-color: #8c8b90;
+  background-color: $colorWhite;
 }
 .navbar-nav {
   margin-left: 70px;
