@@ -30,7 +30,7 @@ export default {
   name: 'createBucket',
   data() {
     return {
-      nGrok: 'http://2ca1b7de.ngrok.io',
+      nGrok: 'http://3682f36a.ngrok.io',
       bucketName: '',
     };
   },

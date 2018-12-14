@@ -21,7 +21,18 @@
         <b-col>
           <h5>Folder List: </h5>
           <div v-for="(folder, item) in folderList" :key="item">
-            <h6> <font-awesome-icon :icon="['fas', 'folder-open']" size="lg" /> {{folder}}</h6>
+            <span class="fileClick" @click="getFileObject(folder)"> <font-awesome-icon :icon="['fas', 'folder-open']" size="3x" /><h6>{{folder}}</h6></span>
+          </div>
+        </b-col>
+      </b-row>
+      <b-row class="fileList" v-show="whenFiles">
+        <b-col lg="2">
+          <h5>File List: </h5>
+          <hr>
+        </b-col>
+        <b-col lg="12" class="row">
+          <div v-for="(file, item) in filelist" :key="item">
+            <p class="fileClick fileDispaly"> <font-awesome-icon :icon="['fas', 'file']" />  {{file}}</p>
           </div>
         </b-col>
       </b-row>
@@ -42,7 +53,9 @@ export default {
       options: [],
       folderList: [],
       filelist: [],
-      nGrok: 'http://2ca1b7de.ngrok.io',
+      storageBucket: '',
+      whenFiles: false,
+      nGrok: 'http://3682f36a.ngrok.io',
     };
   },
   methods: {
@@ -50,7 +63,6 @@ export default {
       // get all buckets for user/project
       axios.get(`${this.nGrok}/api/buckets`)
         .then((response) => {
-          console.log(response);
           this.options = response.data;
         })
         .catch((error) => {
@@ -58,45 +70,27 @@ export default {
         });
     },
     getBucketObject(name) {
-      // lists files and folders in the bucket
+      // lists folders in the bucket
+      this.storageBucket = name;
       axios.get(`${this.nGrok}/api/objects/${name}`)
         .then((response) => {
-          let objectList = '';
-          objectList = response.data.files;
-          this.sortFiles(objectList);
+          this.folderList = response.data;
         })
         .catch((error) => {
           console.log(error, 'BucketObjects error line 79');
         });
     },
-    sortFiles(objectList) {
-      const prefixList = [];
-      objectList.forEach((file) => {
-        // Breaks off the prefix
-        const stringSplit = file.split('/')[0];
-        // push it to temp array
-        prefixList.push(stringSplit);
-      });
-      // let find those duplicates
-      this.findDuplicates(prefixList);
-      // string split the files as well to file list array
-    },
-    findDuplicates(data) {
-      // Sort out all duplications
-      // push remaining folders to folderList array
-      const result = [];
-      data.forEach((element, index) => {
-      // Find if there is a duplicate or not
-        if (data.indexOf(element, index + 1) > -1) {
-        // Find if the element is already in the result array or not
-          if (result.indexOf(element) === -1) {
-            // pa pa push it real good ....... to the results array
-            result.push(element);
-          }
-        }
-      });
-      // make it accessable for display
-      this.folderList = result;
+     getFileObject(name) {
+       console.log('storage: ',this.storageBucket, 'file: ',name);
+      // lists files in the bucket
+      axios.get(`${this.nGrok}/api/objects/files/${this.storageBucket}/${name}`)
+        .then((response) => {
+          this.filelist = response.data;
+          this.whenFiles = true;
+        })
+        .catch((error) => {
+          console.log(error, 'getFileObject error line 83');
+        });
     },
   },
 };
@@ -109,5 +103,14 @@ export default {
 .homeButton {
   background-color: $colorBlue;
   border-color: $colorBlue;
+}
+.fileList {
+  margin-top: 90px;
+}
+.fileDispaly {
+  padding: 10px;
+}
+.fileClick {
+  cursor: pointer;
 }
 </style>
