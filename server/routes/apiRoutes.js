@@ -13,7 +13,11 @@ module.exports = ((app) => {
   //   .post(apiList.upLoadObjects)
   //   .get(apiList.downLoadObjects);
   // .delete()
-
+  // list all files
   app.route('/api/objects/files/:storage/:name')
     .get(apiObjectList.getFileObjects);
+
+  // get file meta data
+  app.route('/api/file/meta/:storage/:folder/:name')
+    .get(apiObjectList.getMetaFile);
 });

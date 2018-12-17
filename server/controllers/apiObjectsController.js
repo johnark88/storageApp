@@ -8,7 +8,6 @@ const storage = new Storage ({
 });
 
 exports.getObjects = async (req, res) => {
-
   function findDuplicates(theFolders) {
     // Sort out all duplications
     // push remaining folders to result array
@@ -89,4 +88,26 @@ exports.getFileObjects = async (req, res) => {
     filesToSort.push(file.name);
   });
   sortFiles(filesToSort);
+};
+
+// getting file meta data
+exports.getMetaFile = async (req, res) => {
+  const bucketName = req.params.storage+'/'+req.params.folder;
+  const filename = req.params.name;
+  const myBucket = storage.bucket(bucketName);
+  const file = myBucket.file(filename);
+
+
+  await file.getMetadata((err, metadata, apiResponse) => {
+    // console.log(err);
+    // console.log(metadata);
+    console.log(apiResponse);
+  });
+
+  // file.getMetadata().then((data) => {
+  //   const metadata = data[0];
+  //   const apiResponse = data[1];
+  //   console.log(metadata, ' meta');
+  //   console.log(apiResponse, 'response');
+  // });
 };
