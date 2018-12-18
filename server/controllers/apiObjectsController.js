@@ -1,9 +1,9 @@
 const { Storage } = require('@google-cloud/storage');
 
-const projectId = 'photostorage-224716';
+const myProjectId = 'photostorage-224716';
 
-const storage = new Storage ({
-  projectId: projectId,
+const storage = new Storage({
+  projectId: myProjectId,
   keyFilename: './storage.json',
 });
 
@@ -40,7 +40,7 @@ exports.getObjects = async (req, res) => {
   }
 
   // Gets ALL items in bucket
-  const bucketName = req.params.bucketName;
+  const bucketName = `${req.params.bucketName}`;
   // the get
   const [files] = await storage.bucket(bucketName).getFiles();
   const bucketObjects = {
@@ -56,26 +56,40 @@ exports.getObjects = async (req, res) => {
 
 exports.getFileObjects = async (req, res) => {
   const bucketName = req.params.storage;
-  const prefix = req.params.name+'/';
+  const thePrefix = `${req.params.name}/`;
   const delimiter = '/';
-  // const filePrefix = bucketName+'/'+req.params.name;
+
+  function getMetaFile(filename) {
+    const nameOfBucket = storage.bucket(bucketName);
+    const file = nameOfBucket.file(`${thePrefix}${filename}`);
+    const dataToSendBack = [];
+
+    file.get().then((data) => {
+      // console.log(data[0].metadata);
+      dataToSendBack.push({ meta: data[0].metadata, name: filename });
+      // res.json(file.metadata);
+      console.log(dataToSendBack);
+      res.json(dataToSendBack);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
 
   function sortFiles(objectList) {
-    const filesSorted = [];
+    // const filesSorted = [];
     objectList.forEach((file) => {
       // Breaks off the prefix
       const stringSplit = file.split('/')[1];
       // push it to temp array
-      filesSorted.push(stringSplit);
-      if (filesSorted[0] === '') {
-        filesSorted.shift();
+      // filesSorted.push(stringSplit);
+      if (stringSplit !== '') {
+        getMetaFile(stringSplit);
       }
     });
-    res.json(filesSorted);
   }
 
   const options = {
-    prefix: prefix,
+    prefix: thePrefix,
   };
 
   if (delimiter) {
@@ -88,26 +102,4 @@ exports.getFileObjects = async (req, res) => {
     filesToSort.push(file.name);
   });
   sortFiles(filesToSort);
-};
-
-// getting file meta data
-exports.getMetaFile = async (req, res) => {
-  const bucketName = req.params.storage+'/'+req.params.folder;
-  const filename = req.params.name;
-  const myBucket = storage.bucket(bucketName);
-  const file = myBucket.file(filename);
-
-
-  await file.getMetadata((err, metadata, apiResponse) => {
-    // console.log(err);
-    // console.log(metadata);
-    console.log(apiResponse);
-  });
-
-  // file.getMetadata().then((data) => {
-  //   const metadata = data[0];
-  //   const apiResponse = data[1];
-  //   console.log(metadata, ' meta');
-  //   console.log(apiResponse, 'response');
-  // });
 };

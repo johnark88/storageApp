@@ -18,6 +18,6 @@ module.exports = ((app) => {
     .get(apiObjectList.getFileObjects);
 
   // get file meta data
-  app.route('/api/file/meta/:storage/:folder/:name')
-    .get(apiObjectList.getMetaFile);
+  // app.route('/api/file/meta/:storage/:folder/:name')
+  //   .get(apiObjectList.getMetaFile);
 });
