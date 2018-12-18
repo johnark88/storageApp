@@ -32,7 +32,8 @@
         </b-col>
         <b-col lg="12" class="row">
           <div v-for="(file, item) in filelist" :key="item">
-            <p class="fileClick fileDispaly" @click="getFileMeta(file)"> <font-awesome-icon :icon="['fas', 'file']" />  {{file}} </p>
+            <p class="fileClick fileDispaly"> <font-awesome-icon :icon="['fas', 'file']" />  {{file.name}} </p>
+            <b-img thumbnail fluid :src="file.meta.mediaLink"  alt="Responsive image" />
           </div>
         </b-col>
       </b-row>
@@ -53,10 +54,11 @@ export default {
       options: [],
       folderList: [],
       filelist: [],
+      metaData: [],
       storageBucket: '',
       whenFiles: false,
       selectedFolder: '',
-      nGrok: 'http://26ff9830.ngrok.io',
+      nGrok: 'http://24b2dbb0.ngrok.io',
     };
   },
   methods: {
@@ -82,24 +84,14 @@ export default {
         });
     },
      getFileObject(name) {
-       console.log('storage: ',this.storageBucket, 'folder: ',name);
+       this.metaData = [];
+       this.filelist = [];
       // lists files in the bucket
       this.selectedFolder = name; 
       axios.get(`${this.nGrok}/api/objects/files/${this.storageBucket}/${name}`)
         .then((response) => {
           this.filelist = response.data;
           this.whenFiles = true;
-        })
-        .catch((error) => {
-          console.log(error, 'getFileObject error line 83');
-        });
-    },
-    getFileMeta(fileName){
-      console.log('storage: ',this.storageBucket, 'file: ',fileName);
-
-      axios.get(`${this.nGrok}/api/file/meta/${this.storageBucket}/${this.selectedFolder}/${fileName}`)
-        .then((response) => {
-          console.log(response);
         })
         .catch((error) => {
           console.log(error, 'getFileObject error line 83');
