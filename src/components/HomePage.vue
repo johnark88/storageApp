@@ -32,8 +32,10 @@
         </b-col>
         <b-col lg="12" class="row">
           <div v-for="(file, item) in filelist" :key="item">
-            <p class="fileClick fileDispaly"> <font-awesome-icon :icon="['fas', 'file']" />  {{file.name}} </p>
-            <b-img thumbnail fluid :src="file.meta.mediaLink"  alt="Responsive image" />
+            <p class="fileClick fileDispaly"  @click="displayImage"> <font-awesome-icon :icon="['fas', 'file']" />  {{file.name}} </p>
+            <div class="fileImage" v-if="showImage">
+              <b-img thumbnail fluid :src="file.meta.mediaLink"  alt="Responsive image" />
+            </div>
           </div>
         </b-col>
       </b-row>
@@ -58,8 +60,12 @@ export default {
       storageBucket: '',
       whenFiles: false,
       selectedFolder: '',
-      nGrok: 'http://24b2dbb0.ngrok.io',
+      showImage: false,
+      nGrok: 'http://b471b422.ngrok.io',
     };
+  },
+  watch: {
+
   },
   methods: {
     getBuckets() {
@@ -78,6 +84,8 @@ export default {
       axios.get(`${this.nGrok}/api/objects/${name}`)
         .then((response) => {
           this.folderList = response.data;
+          this.whenFiles = false;
+          this.showImage = false;
         })
         .catch((error) => {
           console.log(error, 'BucketObjects error line 79');
@@ -96,6 +104,14 @@ export default {
         .catch((error) => {
           console.log(error, 'getFileObject error line 83');
         });
+    },
+    displayImage() {
+      console.log('show me picture')
+      if (this.showImage === true ) {
+        this.showImage = false;
+      } else {
+        this.showImage = true;
+      }
     },
   },
 };
