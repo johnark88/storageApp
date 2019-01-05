@@ -61,7 +61,7 @@ export default {
       whenFiles: false,
       selectedFolder: '',
       showImage: false,
-      nGrok: 'http://b471b422.ngrok.io',
+      nGrok: 'http://694c05e1.ngrok.io',
     };
   },
   watch: {
@@ -98,6 +98,7 @@ export default {
       this.selectedFolder = name; 
       axios.get(`${this.nGrok}/api/objects/files/${this.storageBucket}/${name}`)
         .then((response) => {
+          console.log(response, 'res');
           this.filelist = response.data;
           this.whenFiles = true;
         })

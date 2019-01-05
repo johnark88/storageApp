@@ -58,33 +58,59 @@ exports.getFileObjects = async (req, res) => {
   const bucketName = req.params.storage;
   const thePrefix = `${req.params.name}/`;
   const delimiter = '/';
+  const nameOfBucket = storage.bucket(bucketName);
 
-  function getMetaFile(filename) {
-    const nameOfBucket = storage.bucket(bucketName);
-    const file = nameOfBucket.file(`${thePrefix}${filename}`);
-    const dataToSendBack = [];
-
-    file.get().then((data) => {
-      // console.log(data[0].metadata);
-      dataToSendBack.push({ meta: data[0].metadata, name: filename });
-      // res.json(file.metadata);
-      console.log(dataToSendBack);
-      res.json(dataToSendBack);
-    }).catch((error) => {
-      console.log(error);
-    });
-  }
 
   function sortFiles(objectList) {
-    // const filesSorted = [];
-    objectList.forEach((file) => {
+    const temp = [];
+    let allTheData = [];
+    objectList.forEach((item) => {
       // Breaks off the prefix
-      const stringSplit = file.split('/')[1];
-      // push it to temp array
-      // filesSorted.push(stringSplit);
+      const stringSplit = item.split('/')[1];
       if (stringSplit !== '') {
-        getMetaFile(stringSplit);
+        const file = nameOfBucket.file(`${thePrefix}${stringSplit}`);
+
+        const getMetaPromise = file.getMetadata();
+        getMetaPromise.then((data) => {
+          console.log(data[0], 'data');
+          temp.push({ meta: data[0], name: stringSplit });
+        })
+          .then(() => {
+            console.log(temp, ' temmopp 2');
+            allTheData = temp;
+            res.json(allTheData);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
+      // console.log(allTheData, 'all ');
+      // return new Promise((resolve, reject) => {
+      //   file.getMetadata((err, metadata, apiResponse) => {
+      //     if (err) {
+      //       reject(err);
+      //     } else {
+      //       temp.push({ meta: metadata, name: stringSplit });
+      //       resolve(res.json(temp));
+      //     }
+      //   });
+      // });
+      // file.getMetadata().then((data) => {
+      //   const metadata = data[0];
+      //   console.log(metadata);
+      // }).then((metadata) => {
+      //   res.json(metadata);
+      // });
+      // console.log(temp, 'post');
+      // file.get().then((data) => {
+      //   // temp.push({ meta: data[0].metadata, name: stringSplit });
+      // }).catch((error) => {
+      //   console.log(error);
+      // });
+      // file.getMetadata(function(err, metadata, apiResponse) {
+      //   temp.push({ meta: metadata, name: stringSplit });
+      //   res.json(temp)
+      // });
     });
   }
 
