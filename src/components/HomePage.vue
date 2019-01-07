@@ -29,14 +29,17 @@
         <b-col lg="2">
           <h5>File List: </h5>
           <hr>
+          <div v-for="(file, item) in filelist" :key="item">
+            <p class="fileClick fileDispaly"  @click="getMetaData(file)"> <font-awesome-icon :icon="['fas', 'file']" /> {{file}} </p>
+          </div>
         </b-col>
         <b-col lg="12" class="row">
-          <div v-for="(file, item) in filelist" :key="item">
+          <!-- <div v-for="(file, item) in filelist" :key="item">
             <p class="fileClick fileDispaly"  @click="displayImage"> <font-awesome-icon :icon="['fas', 'file']" />  {{file.name}} </p>
             <div class="fileImage" v-if="showImage">
               <b-img thumbnail fluid :src="file.meta.mediaLink"  alt="Responsive image" />
             </div>
-          </div>
+          </div> -->
         </b-col>
       </b-row>
     </b-container>
@@ -61,7 +64,8 @@ export default {
       whenFiles: false,
       selectedFolder: '',
       showImage: false,
-      nGrok: 'http://694c05e1.ngrok.io',
+      fileName: '',
+      nGrok: 'http://73908e60.ngrok.io',
     };
   },
   watch: {
@@ -92,18 +96,31 @@ export default {
         });
     },
      getFileObject(name) {
-       this.metaData = [];
        this.filelist = [];
       // lists files in the bucket
       this.selectedFolder = name; 
       axios.get(`${this.nGrok}/api/objects/files/${this.storageBucket}/${name}`)
         .then((response) => {
-          console.log(response, 'res');
+          // console.log(response, 'res');
           this.filelist = response.data;
           this.whenFiles = true;
+          console.log(this.filelist);
         })
         .catch((error) => {
-          console.log(error, 'getFileObject error line 83');
+          console.log(error, '113');
+        });
+    },
+    getMetaData(name) {
+      this.selectedFolder = name;
+      this.fileName = fileName
+      axios.get(`${this.nGrok}/api/objects/files/${this.storageBucket}/${name}/${fileName}`)
+        .then((response) => {
+          console.log(response, 'res');
+          this.metaData = response.data;
+          this.whenMeta = true;
+        })
+        .catch((error) => {
+          console.log(error, '113');
         });
     },
     displayImage() {

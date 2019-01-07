@@ -58,62 +58,58 @@ exports.getFileObjects = async (req, res) => {
   const bucketName = req.params.storage;
   const thePrefix = `${req.params.name}/`;
   const delimiter = '/';
-  const nameOfBucket = storage.bucket(bucketName);
-
 
   function sortFiles(objectList) {
-    const temp = [];
-    let allTheData = [];
+    const fileNames = [];
     objectList.forEach((item) => {
       // Breaks off the prefix
       const stringSplit = item.split('/')[1];
       if (stringSplit !== '') {
-        const file = nameOfBucket.file(`${thePrefix}${stringSplit}`);
-
-        const getMetaPromise = file.getMetadata();
-        getMetaPromise.then((data) => {
-          console.log(data[0], 'data');
-          temp.push({ meta: data[0], name: stringSplit });
-        })
-          .then(() => {
-            console.log(temp, ' temmopp 2');
-            allTheData = temp;
-            res.json(allTheData);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        // console.log(stringSplit, 'split');
+        fileNames.push(stringSplit);
       }
-      // console.log(allTheData, 'all ');
-      // return new Promise((resolve, reject) => {
-      //   file.getMetadata((err, metadata, apiResponse) => {
-      //     if (err) {
-      //       reject(err);
-      //     } else {
-      //       temp.push({ meta: metadata, name: stringSplit });
-      //       resolve(res.json(temp));
-      //     }
-      //   });
-      // });
-      // file.getMetadata().then((data) => {
-      //   const metadata = data[0];
-      //   console.log(metadata);
-      // }).then((metadata) => {
-      //   res.json(metadata);
-      // });
-      // console.log(temp, 'post');
-      // file.get().then((data) => {
-      //   // temp.push({ meta: data[0].metadata, name: stringSplit });
-      // }).catch((error) => {
-      //   console.log(error);
-      // });
-      // file.getMetadata(function(err, metadata, apiResponse) {
-      //   temp.push({ meta: metadata, name: stringSplit });
-      //   res.json(temp)
-      // });
     });
+    return fileNames;
   }
 
+  // function getFileMeta() {
+  //   const file = nameOfBucket.file(`${thePrefix}${stringSplit}`);
+  //   const getMetaPromise = file.getMetadata();
+
+  // }
+  // getMetaPromise.then((data) => {
+  //   // console.log(data[0], 'data');
+  //   temp.push({ meta: data[0], name: stringSplit });
+  // }).catch((err) => {
+  //   console.log(err);
+  // });
+  // console.log(allTheData, 'all ');
+  // return new Promise((resolve, reject) => {
+  //   file.getMetadata((err, metadata, apiResponse) => {
+  //     if (err) {
+  //       reject(err);
+  //     } else {
+  //       temp.push({ meta: metadata, name: stringSplit });
+  //       resolve(res.json(temp));
+  //     }
+  //   });
+  // });
+  // file.getMetadata().then((data) => {
+  //   const metadata = data[0];
+  //   console.log(metadata);
+  // }).then((metadata) => {
+  //   res.json(metadata);
+  // });
+  // console.log(temp, 'post');
+  // file.get().then((data) => {
+  //   // temp.push({ meta: data[0].metadata, name: stringSplit });
+  // }).catch((error) => {
+  //   console.log(error);
+  // });
+  // file.getMetadata(function(err, metadata, apiResponse) {
+  //   temp.push({ meta: metadata, name: stringSplit });
+  //   res.json(temp)
+  // });
   const options = {
     prefix: thePrefix,
   };
@@ -127,5 +123,27 @@ exports.getFileObjects = async (req, res) => {
   files.forEach((file) => {
     filesToSort.push(file.name);
   });
-  sortFiles(filesToSort);
+
+  async function sendBack() {
+    const data = await sortFiles(filesToSort);
+    console.log(data, 'a / await');
+    // data = temp;
+    res.json(data);
+  }
+  sendBack();
+};
+
+exports.getFileMeta = async (req, res) => {
+  const bucketName = req.params.storage;
+  const thePrefix = `${req.params.name}/`;
+  const fileName = `${req.params.fileName}`;
+  const nameOfBucket = storage.bucket(bucketName);
+  const file = nameOfBucket.file(`${thePrefix}${fileName}`);
+
+  await file.getMetadata.then((data) => {
+    const metadata = data[0];
+    console.log(metadata);
+  }).then((metadata) => {
+    // res.json(metadata);
+  });
 };
