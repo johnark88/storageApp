@@ -15,7 +15,6 @@
               <b-dropdown-item href="#">Account</b-dropdown-item>
               <b-dropdown-item href="#">Settings</b-dropdown-item>
             </b-nav-item-dropdown>
-
           </b-navbar-nav>
         </b-collapse>
     </b-navbar>
