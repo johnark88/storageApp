@@ -134,16 +134,20 @@ exports.getFileObjects = async (req, res) => {
 };
 
 exports.getFileMeta = async (req, res) => {
-  const bucketName = req.params.storage;
-  const thePrefix = `${req.params.name}/`;
-  const fileName = `${req.params.fileName}`;
+  const bucketName = req.params.storage; // the container name
+  const thePrefix = `${req.params.name}/`; // the folder name
+  const fileName = `${req.params.filename}`; // the filename
+
+  // prepare the request
   const nameOfBucket = storage.bucket(bucketName);
   const file = nameOfBucket.file(`${thePrefix}${fileName}`);
 
-  await file.getMetadata.then((data) => {
-    const metadata = data[0];
-    console.log(metadata);
-  }).then((metadata) => {
-    // res.json(metadata);
+  file.getMetadata((err, metadata, apiResponse) => {
+    if (!err) {
+      console.log(metadata);
+      res.json(metadata);
+    } else {
+      console.log(err, 'file get meta - server error');
+    }
   });
 };
