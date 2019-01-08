@@ -26,20 +26,22 @@
         </b-col>
       </b-row>
       <b-row class="fileList" v-show="whenFiles">
-        <b-col lg="2">
+         <b-col lg="12" class="row"></b-col>
+        <b-col lg="6">
           <h5>File List: </h5>
           <hr>
-          <div v-for="(file, item) in filelist" :key="item">
-            <p class="fileClick fileDispaly"  @click="getMetaData(file)"> <font-awesome-icon :icon="['fas', 'file']" /> {{file}} </p>
-          </div>
+            <b-list-group v-scroll="handleScroll">
+              <b-list-group-item  v-for="(file, item) in filelist" :key="item" 
+              :value="item" @click="getMetaData(file)" href="#">
+              <font-awesome-icon :icon="['fas', 'file']" /> 
+              {{file}}
+              </b-list-group-item>
+            </b-list-group>
         </b-col>
-        <b-col lg="12" class="row">
-          <!-- <div v-for="(file, item) in filelist" :key="item">
-            <p class="fileClick fileDispaly"  @click="displayImage"> <font-awesome-icon :icon="['fas', 'file']" />  {{file.name}} </p>
-            <div class="fileImage" v-if="showImage">
-              <b-img thumbnail fluid :src="file.meta.mediaLink"  alt="Responsive image" />
-            </div>
-          </div> -->
+        <b-col>
+          <div class="fileImage">
+            <b-img thumbnail fluid :src="metaData.mediaLink" class="fileClick fileDispaly"/> 
+          </div>
         </b-col>
       </b-row>
     </b-container>
@@ -63,9 +65,8 @@ export default {
       storageBucket: '',
       whenFiles: false,
       selectedFolder: '',
-      showImage: false,
       fileName: '',
-      nGrok: 'http://73908e60.ngrok.io',
+      nGrok: 'http://9ede1f27.ngrok.io',
     };
   },
   watch: {
@@ -101,35 +102,23 @@ export default {
       this.selectedFolder = name; 
       axios.get(`${this.nGrok}/api/objects/files/${this.storageBucket}/${name}`)
         .then((response) => {
-          // console.log(response, 'res');
           this.filelist = response.data;
           this.whenFiles = true;
-          console.log(this.filelist);
         })
         .catch((error) => {
           console.log(error, '113');
         });
     },
-    getMetaData(name) {
-      this.selectedFolder = name;
+    getMetaData(fileName) {
+      name = this.selectedFolder;
       this.fileName = fileName
       axios.get(`${this.nGrok}/api/objects/files/${this.storageBucket}/${name}/${fileName}`)
         .then((response) => {
-          console.log(response, 'res');
           this.metaData = response.data;
-          this.whenMeta = true;
         })
         .catch((error) => {
           console.log(error, '113');
         });
-    },
-    displayImage() {
-      console.log('show me picture')
-      if (this.showImage === true ) {
-        this.showImage = false;
-      } else {
-        this.showImage = true;
-      }
     },
   },
 };
@@ -144,12 +133,14 @@ export default {
   border-color: $colorBlue;
 }
 .fileList {
-  margin-top: 90px;
+  margin-top: 6em;
 }
-.fileDispaly {
-  padding: 10px;
+.fileImage {
+  margin-top: 3.2em;
 }
-.fileClick {
+.listToScroll {
   cursor: pointer;
+  overflow: scroll;
+  font-size: 16px;
 }
 </style>
