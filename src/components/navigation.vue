@@ -5,7 +5,7 @@
         <b-navbar-brand>Storage App</b-navbar-brand>
         <b-collapse is-nav id="nav_text_collapse">
           <b-nav-text>Your storage needs </b-nav-text>
-          <b-navbar-nav fill="true">
+          <b-navbar-nav >
             <b-nav-item><router-link to="/">Home</router-link></b-nav-item>
             <b-nav-item><router-link to="/upload">Upload</router-link></b-nav-item>
             <b-nav-item><router-link to="/user-files">See Files</router-link></b-nav-item>
@@ -18,18 +18,19 @@
             </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
+        <b-nav-item> <router-link to="/login">Login/Sign Up</router-link> </b-nav-item>
     </b-navbar>
   </div>
 </template>
 
 <script>
 import aboutModal from '@/components/aboutModal.vue';
-// import createBucket from '@/components/createBucket'
+import login from '@/components/login.vue'
 export default {
   name: 'navigation',
   components: {
     aboutModal,
-    // createBucket,
+    login,
   },
   data() {
     return {
@@ -62,6 +63,9 @@ a {
 }
 .navbar-nav {
   margin-left: 70px;
+}
+.nav-item {
+  list-style: none;
 }
 
 

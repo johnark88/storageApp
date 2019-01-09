@@ -22,9 +22,9 @@ new Vue({
     firebase.initializeApp(config);
     // firebase.auth().onAuthStateChanged((user) => {
     //   if (user) {
-    //     // this.$router.push('/home');
+    //     // this.$router.push('/user-files');
     //   } else {
-    //     // this.$router.push('/auth');
+    //     // this.$router.push('/login');
     //   }
     // });
   },

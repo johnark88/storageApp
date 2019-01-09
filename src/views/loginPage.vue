@@ -1,14 +1,15 @@
 <template>
-  <div class="fileDisplay">
-     <fileDisplayComp />
+  <div class="loginPage">
+     <h4>login</h4>
+     
   </div>
 </template>
 <script>
-import fileDisplayComp from '@/components/fileDisplayComp.vue';
+import login from '@/components/login.vue';
 export default {
-  name: 'fileDisplay',
+  name: 'loginPage',
   components: {
-    fileDisplayComp
+    // UploadComp
   },
   data() {
     return {

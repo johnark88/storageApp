@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Upload from './views/Upload.vue';
 import fileDisplay from './views/fileDisplay.vue';
+import loginPage from './views/loginPage.vue';
 
 Vue.use(Router);
 
@@ -24,6 +25,11 @@ export default new Router({
       path: '/user-files',
       name: 'File Display',
       component: fileDisplay,
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: loginPage,
     },
     // {
     //   path: '/about',
