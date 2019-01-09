@@ -5,6 +5,7 @@ import './plugins/axios';
 import './plugins/fontawesome';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import firebase from 'firebase/app';
+import 'firebase/auth';
 import { config } from '../firebase';
 import App from './App.vue';
 import router from './router';
