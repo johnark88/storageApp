@@ -65,7 +65,7 @@ export default {
       storageBucket: '',
       whenFiles: false,
       selectedFolder: '',
-      nGrok: 'https://43cb718a.ngrok.io',
+      nGrok: 'https://150e06b0.ngrok.io',
     };
   },
   watch: {

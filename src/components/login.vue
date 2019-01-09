@@ -4,21 +4,34 @@
       <b-row class="justify-content-center">
         <b-col></b-col>
         <b-col lg="6">
-            <b-card bg-variant="dark" class="loginForm">
-              
-                <b-form-group horizontal
-                              label="Email"
-                              label-class="text-lg-right"
-                              label-for="nestedStreet">
-                  <b-form-input id="nestedStreet" v-model="user.email"></b-form-input>
-                </b-form-group>
-                <b-form-group horizontal
-                              label="Password"
-                              label-class="text-lg-right"
-                              label-for="nestedCity">
-                  <b-form-input id="nestedCity" v-model="user.password"></b-form-input>
-                </b-form-group>
-                <b-button class="loginSubmit" @click="login" type="submit">Submit</b-button>
+          <b-card bg-variant="dark" class="userLoginCard">
+            <b-form @submit="checkForm" id="loginForm" novalidate>
+              <b-form-group horizontal id="inputEmail" label="Email address:" label-for="inputEmail">
+                <b-form-input id="inputEmail"
+                              type="email"
+                              v-model="user.email"
+                              required
+                              placeholder="Enter email">
+                </b-form-input>
+              </b-form-group>
+              <b-form-group horizontal id="inputPassword" label="Password:" label-for="inputPassword">
+                <b-form-input id="inputPassword"
+                              type="password"
+                              v-model="user.password"
+                              required
+                              placeholder="Enter password">
+                </b-form-input>
+              </b-form-group>
+              <p></p>
+              <p v-if="errors.length">
+                <b>Please correct the following error(s):</b>
+                <ul class="errorList">
+                  <li v-for="error in errors">{{ error }}</li>
+                </ul>
+              </p>
+              <p></p>
+              <b-button class="loginSubmit" type="submit">Submit</b-button>
+            </b-form>
           </b-card>
         </b-col>
         <b-col></b-col>
@@ -33,9 +46,10 @@ export default {
   name: 'login',
   data() {
     return {
+      errors: [],
       user:  {
-        password: '',
-        emaiil: ''
+        password: null,
+        email: null,
       },
     };
   },
@@ -43,23 +57,26 @@ export default {
     
   },
   methods: {
+   
     login() {
-      if (this.isValid) {
-        const email = this.user.email;
-        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-          // Handle Errors here.
-          console.log('here')
-          var errorCode = error.code;
-          var errorMessage = error.message;
-        });
-      }
+      console.log('Log in here');
+      console.log(this.user);
+      // const email = this.user.email;
+      // const password = this.user.password;
+      // firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+      //   // Handle Errors here.
+      //   console.log('here')
+      //   var errorCode = error.code;
+      //   var errorMessage = error.message;
+      // });
     },
   },
 };
 </script>
 <style scoped lang="scss">
-  .login {
+  .userLoginCard {
     color: white;
+    font-size: 18px;
   }
   .loginSubmit {
     background-color: $colorBlue;
@@ -67,5 +84,9 @@ export default {
     &:hover {
       background-color: $colorAqua;
     }
+  }
+  .errorList {
+    list-style: none;
+    margin-left: -2.3em;
   }
 </style>

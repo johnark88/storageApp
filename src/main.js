@@ -34,7 +34,7 @@ new Vue({
 
 // check to see if the route requires authentication before it loads
 // router.beforeEach((to, from, next) => {
-//   const currentUser = firebase.auth().currentUser; 
+//   const currentUser = firebase.auth().currentUser;
 //   const requiresAuth = to.matched.some( record => record.meta.requiresAuth);
 //   if (requiresAuth && !currentUser) {
 //     next('/auth');
