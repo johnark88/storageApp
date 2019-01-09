@@ -8,6 +8,7 @@
           <b-navbar-nav fill="true">
             <b-nav-item><router-link to="/">Home</router-link></b-nav-item>
             <b-nav-item><router-link to="/upload">Upload</router-link></b-nav-item>
+            <b-nav-item><router-link to="/user-files">See Files</router-link></b-nav-item>
             <!-- <b-nav-item><router-link to="/">Home</router-link></b-nav-item>
             <b-nav-item><router-link to="/">Home</router-link></b-nav-item> -->
             <about-modal />

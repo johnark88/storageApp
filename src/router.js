@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Upload from './views/Upload.vue';
+import fileDisplay from './views/fileDisplay.vue';
 
 Vue.use(Router);
 
@@ -18,6 +19,11 @@ export default new Router({
       path: '/upload',
       name: 'Upload',
       component: Upload,
+    },
+    {
+      path: '/user-files',
+      name: 'File Display',
+      component: fileDisplay,
     },
     // {
     //   path: '/about',
