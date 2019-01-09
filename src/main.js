@@ -1,6 +1,7 @@
 import '@babel/polyfill';
 import Vue from 'vue';
 import './plugins/bootstrap-vue';
+import './plugins/vee-validate';
 import './plugins/axios';
 import './plugins/fontawesome';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
