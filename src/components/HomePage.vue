@@ -2,12 +2,12 @@
   <div class="HomePage">
     <b-container>
       <b-row>
-        <hr width="100%">
-        <b-col lg="2">
-          <b-button class="homeButton" @click="getBuckets">Show current containers</b-button>
-          <p></p>
-          <createBucket />
+        <b-col lg="12" class="row">
+              <b-button class="btnHeader"> <router-link to="/upload" style="color: white;"> Upload </router-link></b-button>
+              <b-button class="btnHeader" @click="getBuckets"> <a href="#" style="color: white; text-decoration: none;">Show current containers </a></b-button>
+              <createBucket class="btnHeader"/> 
         </b-col>
+         <hr width="100%">
         <b-col lg="3">
           <h5> Containers in storage: </h5>
           <div>
@@ -26,14 +26,21 @@
         </b-col>
       </b-row>
       <b-row class="fileList" v-show="whenFiles">
-        <b-col lg="2">
+         <b-col lg="12" class="row"></b-col>
+        <b-col lg="6">
           <h5>File List: </h5>
           <hr>
+            <b-list-group>
+              <b-list-group-item  v-for="(file, item) in filelist" :key="item" 
+              :value="item" @click="getMetaData(file)" href="#">
+              <font-awesome-icon :icon="['fas', 'file']" /> 
+              {{file}}
+              </b-list-group-item>
+            </b-list-group>
         </b-col>
-        <b-col lg="12" class="row">
-          <div v-for="(file, item) in filelist" :key="item">
-            <p class="fileClick fileDispaly"> <font-awesome-icon :icon="['fas', 'file']" />  {{file.name}} </p>
-            <b-img thumbnail fluid :src="file.meta.mediaLink"  alt="Responsive image" />
+        <b-col>
+          <div class="fileImage">
+            <b-img thumbnail fluid :src="metaData.mediaLink" class="fileClick fileDispaly"/> 
           </div>
         </b-col>
       </b-row>
@@ -58,12 +65,21 @@ export default {
       storageBucket: '',
       whenFiles: false,
       selectedFolder: '',
+<<<<<<< HEAD
       nGrok: 'https://43cb718a.ngrok.io',
+=======
+      fileName: '',
+      nGrok: 'http://fb0258c1.ngrok.io',
+>>>>>>> master
     };
+  },
+  watch: {
+
   },
   methods: {
     getBuckets() {
       // get all buckets for user/project
+      this.metaData = [];
       axios.get(`${this.nGrok}/api/buckets`)
         .then((response) => {
           this.options = response.data;
@@ -73,19 +89,22 @@ export default {
         });
     },
     getBucketObject(name) {
+      this.metaData = [];
       // lists folders in the bucket
       this.storageBucket = name;
       axios.get(`${this.nGrok}/api/objects/${name}`)
         .then((response) => {
           this.folderList = response.data;
+          this.whenFiles = false;
+          this.showImage = false;
         })
         .catch((error) => {
           console.log(error, 'BucketObjects error line 79');
         });
     },
      getFileObject(name) {
-       this.metaData = [];
        this.filelist = [];
+       this.metaData = [];
       // lists files in the bucket
       this.selectedFolder = name; 
       axios.get(`${this.nGrok}/api/objects/files/${this.storageBucket}/${name}`)
@@ -94,7 +113,18 @@ export default {
           this.whenFiles = true;
         })
         .catch((error) => {
-          console.log(error, 'getFileObject error line 83');
+          console.log(error, '113');
+        });
+    },
+    getMetaData(fileName) {
+      name = this.selectedFolder;
+      this.fileName = fileName
+      axios.get(`${this.nGrok}/api/objects/files/${this.storageBucket}/${name}/${fileName}`)
+        .then((response) => {
+          this.metaData = response.data;
+        })
+        .catch((error) => {
+          console.log(error, '113');
         });
     },
   },
@@ -102,20 +132,30 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.containerButtons {
-  padding: 6px;
+.btnHeader {
+  color: white;
+  background-color: $colorBlue;
+  border: $colorBlue;
+  border-radius: 7px;
+  margin: 5px;
+  padding: 5px;
+  &:hover {
+    background-color: $hoverBlue;
+    border: $hoverBlue;
+  }
 }
 .homeButton {
-  background-color: $colorBlue;
-  border-color: $colorBlue;
+  margin: 5px;
 }
 .fileList {
-  margin-top: 90px;
+  margin-top: 4em;
 }
-.fileDispaly {
-  padding: 10px;
+.fileImage {
+  margin-top: 3.2em;
 }
-.fileClick {
+.listToScroll {
   cursor: pointer;
+  overflow: scroll;
+  font-size: 16px;
 }
 </style>

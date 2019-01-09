@@ -1,12 +1,12 @@
 <template>
   <div class="createBucket">
-    <b-button class="homeButton" @click="showModal">Create a new container</b-button>
-    <b-modal ref="createBucketRef" hide-footer title="Create Storage Container">
+    <b-button class="modalOpenBtn" @click="showModal" >Create a new container</b-button>
+    <b-modal ref="createBucketRef" hide-footer title="Create Storage Container" class="modalHeader">
       <div class="d-block text-center">
         <b-container>
           <b-row class="justify-content-center">
           <b-col md="10">
-            <h6>Create a new bucket</h6>
+            <h6 class="modalHeader">Create a new bucket</h6>
           </b-col>
           <b-col>
             <div>
@@ -30,7 +30,7 @@ export default {
   name: 'createBucket',
   data() {
     return {
-      nGrok: 'http://180a974a.ngrok.io',
+      nGrok: 'http://fb0258c1.ngrok.io',
       bucketName: '',
     };
   },
@@ -54,8 +54,16 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.homeButton {
+.modalOpenBtn {
   background-color: $colorBlue;
-  border-color: $colorBlue;
+  border: $colorBlue;
+  &:hover {
+    background-color: $hoverBlue;
+    border: $hoverBlue;
+  }
+}
+
+.modalHeader { 
+  color: $colorDark;
 }
 </style>
