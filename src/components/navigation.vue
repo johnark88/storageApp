@@ -18,7 +18,8 @@
             </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
-        <b-nav-item> <router-link to="/login">Login/Sign Up</router-link> </b-nav-item>
+        <b-nav-item v-show="!userStatus"> <router-link to="/login">Login/Sign Up</router-link> </b-nav-item>
+        <b-nav-item v-show="userStatus"> <signOut /> </b-nav-item>
     </b-navbar>
   </div>
 </template>
@@ -26,17 +27,33 @@
 <script>
 import aboutModal from '@/components/aboutModal.vue';
 import login from '@/components/login.vue'
+import signOut from '@/components/signOut.vue'
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'navigation',
   components: {
     aboutModal,
     login,
+    signOut,
   },
   data() {
     return {
-
+      userStatus: false,
     };
   },
+  computed: {
+    ...mapGetters(['user']),
+  },
+  watch: {
+    user(auth) {
+      if(!auth){
+        this.$route.query.redirect;
+      } else {
+        this.userStatus = true;
+      }
+    }
+  }
 };
 </script>
 <style lang="scss">

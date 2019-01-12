@@ -1,26 +1,39 @@
 <template>
   <div class="loginPage">
-     <h4>Please Login</h4>
-     <login />
-     <div class="spacing"></div>
-     <h4>or Sign Up</h4>
-     <signUp />
+     <b-container>
+      <b-row class="justify-content-center siteHeader">
+        <h4>Sign In below </h4>
+      </b-row>
+      </b-container>
+      <login />
   </div>
 </template>
 <script>
 import login from '@/components/login.vue';
-import signUp from '@/components/signUp.vue';
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'loginPage',
   components: {
     login,
-    signUp,
   },
   data() {
     return {
+      userStatus: false,
     };
   },
-  methods: {}
+  computed: {
+    ...mapGetters(['user']),
+  },
+  watch: {
+    // user(auth) {
+    //   if(!auth){
+    //     this.$route.push('/');
+    //   } else {
+    //     this.userStatus = true;
+    //   }
+    // }
+  }
 };
 </script>
 <style scoped lang="scss">

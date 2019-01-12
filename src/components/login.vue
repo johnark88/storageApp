@@ -10,7 +10,7 @@
               <b-form-group horizontal id="inputEmail" label="Email address:" label-for="inputEmail">
                 <b-form-input id="inputEmail"
                               type="text"
-                              v-model="user.email"
+                              v-model="newUser.email"
                               v-validate="'required|email'"
                               placeholder="Enter email" name="Email">
                 </b-form-input>
@@ -21,7 +21,7 @@
               </b-form-group>
 
               <b-form-group horizontal id="inputPasswordConfirm" label="Confirm Password" label-for="inputPassword">
-                <input class="formInput" v-validate="'required|confirmed:password'" name="password_confirmation" type="password" v-model="user.password"  placeholder="Confirm password"  data-vv-as="password" id="inputPasswordConfirm" > 
+                <input class="formInput" v-validate="'required|confirmed:password'" name="password_confirmation" type="password" v-model="newUser.password"  placeholder="Confirm password"  data-vv-as="password" id="inputPasswordConfirm" > 
               </b-form-group>
               <div v-show="errors.any()">
                 <b-card bg-variant="danger" class="loginErrorCard">
@@ -53,6 +53,8 @@
 <script>
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'login',
   data() {
@@ -61,11 +63,21 @@ export default {
       hideButton: true,
       showSignIn: false,
       ShowfirebaseError: false,
-      user:  {
+      newUser:  {
         password: null,
         email: null,
       },
     };
+  },
+  computed: {
+    ...mapGetters(['user']),
+  },
+  watch: {
+    user (auth) {
+      if(!!auth){
+        this.$route.query.redirect;
+      }
+    }
   },
   methods: {
     showForm() {
@@ -87,32 +99,12 @@ export default {
           console.log(e, 'submit function');
         })
       },
-      login() {
-        console.log('Log in here');
-        const email = this.user.email;
-        const password = this.user.password;
-        firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {
-          // Handle Errors here.
-          console.log('here')
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          this.firebaseError.push(error.message);
-
-          if (this.firebaseError != null) {
-           
-            this.ShowfirebaseError = true; 
-             console.log(this.ShowfirebaseError, 'error')
-          }
-          console.log(this.firebaseError);
-        });
+      async login() {
+        const email = this.newUser.email;
+        const password = this.newUser.password;
+        const auth = await this.$auth.login(email, password);
+        this.$router.push('/user-files');
       },
-      signOut() {
-        firebase.auth().signOut().then(function() {
-          // Sign-out successful.
-        }).catch(function(error) {
-          // An error happened.
-        });
-      }
   },
 };
 </script>

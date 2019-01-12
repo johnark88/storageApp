@@ -100,7 +100,10 @@ export default {
       signUp() {
         const email = this.user.email;
         const password = this.user.password;
-        firebase.auth().createUserWithEmailAndPassword(email, password).catch((error) => {
+        firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
+          console.log(user, 'user here')
+        })
+        .catch((error) => {
           // Handle Errors here.
           var errorCode = error.code;
           var errorMessage = error.message;
@@ -112,12 +115,24 @@ export default {
              console.log(this.ShowfirebaseError, 'error')
           }
           console.log(this.firebaseError);
-        });
+        }) 
       },
       newUser() {
-        // get user name and some google profile data to save
-        // save to firebase db
-
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            console.log(user, 'new user');
+            // User is signed in.
+            // var displayName = user.displayName;
+            // var email = user.email;
+            // var emailVerified = user.emailVerified;
+            // var uid = user.uid;
+            // var providerData = user.providerData;
+            // this.$router.push('/home')
+          } else {
+            // User is signed out.
+            // ...
+          }
+        });
       },
       signOut() {
         firebase.auth().signOut().then(function() {

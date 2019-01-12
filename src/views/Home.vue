@@ -1,49 +1,37 @@
 <template>
   <div class="home">
     <landingPage />
-    <b-container>
-      <b-row class="justify-content-center siteHeader">
-        <h2>Welcome to the storage app. Taking care of all your image storage needs</h2>
-        
-        <h4>Sign up or Login below </h4>
-      </b-row>
-      </b-container>
-        <div v-if="showSignUp">
-          <signUp />
-        </div>
-        <div v-if="showSignIn"> 
-          <login />
-        </div>
+    <p>Home</p>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import landingPage from '@/components/landingPage.vue';
-import signUp from '@/components/signUp.vue';
-import login from '@/components/login.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'home',
   components: {
     landingPage,
-    login,
-    signUp,
   },
   data() {
     return {
-      showSignIn: true,
-      showSignUp: true,
+      userStatus: false,
     };
   },
-    // showSignIn(oldVal, newVal) {
-    //   console.log(oldVal, newVal)
-    //   this.showSignUp = false;
-    // },
-    // showSignUp(oldVal, newVal) {
-    //   console.log(oldVal, newVal , 'sign up')
-    //   this.showSignIn = false;
+  computed: {
+    ...mapGetters(['user']),
+  },
+  watch: {
+    // user(auth) {
+    //   if(!auth){
+    //     this.$route.query.redirect;
+    //   } else {
+    //     this.userStatus = true;
+    //   }
     // }
+  }
 };
 </script>
 <style scoped lang="scss">

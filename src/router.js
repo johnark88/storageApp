@@ -1,14 +1,16 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+
 import Home from './views/Home.vue';
 import Upload from './views/Upload.vue';
 import fileDisplay from './views/fileDisplay.vue';
 import loginPage from './views/loginPage.vue';
 import User from './views/User.vue';
+import store from './store/store';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -56,3 +58,18 @@ export default new Router({
     // },
   ],
 });
+
+// check to see if the route requires authentication before it loads
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.state.user) {
+      next({ path: '/' });
+    } else {
+      next({ path: '/user-files' });
+    }
+  } else {
+    next();
+  }
+});
+
+export default router;
