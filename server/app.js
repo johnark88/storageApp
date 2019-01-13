@@ -2,7 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const admin = require('firebase-admin');
+
+const dbCxnnection = ('./database.js');
 // const fireDb = require('./api/models/todoListModel'), //created model loading here
+
 require('dotenv').config();
 const serviceAccount = require('./service.json');
 
