@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 
 // importing routes
 const routes = require('./routes/apiRoutes');
-const userRoutes = require('./routes/user');
+const userRoutes = require('./routes/userRoutes');
 
 // register the routes
 routes(app);
