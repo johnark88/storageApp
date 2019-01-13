@@ -1,5 +1,5 @@
 <template>
-  <div class="HomePage">
+  <div class="fileDisplayComp">
     <b-container>
       <b-row>
         <b-col lg="12" class="row">
@@ -52,7 +52,7 @@
 import createBucket from '@/components/createBucket.vue';
 
 export default {
-  name: 'HomePage',
+  name: 'fileDisplayComp',
   components: {
     createBucket,
   },
@@ -65,8 +65,7 @@ export default {
       storageBucket: '',
       whenFiles: false,
       selectedFolder: '',
-      fileName: '',
-      nGrok: 'http://fb0258c1.ngrok.io',
+      nGrok: 'http://011c55bf.ngrok.io',
     };
   },
   watch: {

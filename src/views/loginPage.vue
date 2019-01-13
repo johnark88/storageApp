@@ -1,19 +1,21 @@
 <template>
-  <div class="home">
-    <landingPage />
-    <p>Home</p>
+  <div class="loginPage">
+     <b-container>
+      <b-row class="justify-content-center siteHeader">
+        <h4>Sign In below </h4>
+      </b-row>
+      </b-container>
+      <login />
   </div>
 </template>
-
 <script>
-// @ is an alias to /src
-import landingPage from '@/components/landingPage.vue';
+import login from '@/components/login.vue';
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'home',
+  name: 'loginPage',
   components: {
-    landingPage,
+    login,
   },
   data() {
     return {
@@ -26,7 +28,7 @@ export default {
   watch: {
     // user(auth) {
     //   if(!auth){
-    //     this.$route.query.redirect;
+    //     this.$route.push('/');
     //   } else {
     //     this.userStatus = true;
     //   }
@@ -35,16 +37,10 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-  .siteHeader {
-    margin-top: 4em;
-    h4 {
-      margin-top: 1em;
-    }
+  .loginPage {
+    margin-top: 6em;
   }
-  .siteSignIn {
-    margin-top: 1em;
-  }
-  .signButtons {
-    margin-left: 5em;
+  .spacing {
+    margin: 2em;
   }
 </style>

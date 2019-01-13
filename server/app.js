@@ -1,8 +1,15 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const admin = require('firebase-admin');
 // const fireDb = require('./api/models/todoListModel'), //created model loading here
 require('dotenv').config();
+const serviceAccount = require('./service.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://photostorage-224716.firebaseio.com',
+});
 
 const app = express();
 
