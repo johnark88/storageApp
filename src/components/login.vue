@@ -76,10 +76,21 @@ export default {
     user (auth) {
       if(!!auth){
         this.$route.query.redirect;
+      } else {
+        // this.getUserProfil();
       }
     }
   },
   methods: {
+    getUserProfile() {
+      axios.get('')
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    },
     showForm() {
       // show the sign up form
       this.showSignIn = true;
