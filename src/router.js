@@ -65,7 +65,7 @@ router.beforeEach((to, from, next) => {
     if (!store.state.user) {
       next({ path: '/' });
     } else {
-      next({ path: '/user-files' });
+      next();
     }
   } else {
     next();

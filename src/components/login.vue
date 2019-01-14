@@ -67,6 +67,7 @@ export default {
         password: null,
         email: null,
       },
+      nGrok: 'http://ffae935b.ngrok.io',
     };
   },
   computed: {
@@ -76,14 +77,12 @@ export default {
     user (auth) {
       if(!!auth){
         this.$route.query.redirect;
-      } else {
-        // this.getUserProfil();
       }
     }
   },
   methods: {
     getUserProfile() {
-      axios.get('')
+      axios.get(`${this.nGrok}/users/${this.userid}`)
         .then((response) => {
           console.log(response);
         })
@@ -114,6 +113,9 @@ export default {
         const email = this.newUser.email;
         const password = this.newUser.password;
         const auth = await this.$auth.login(email, password);
+        console.log(auth.user.uid, 'auth');
+        this.userid = auth.user.uid;
+        this.getUserProfile();
         this.$router.push('/user-files');
       },
   },
